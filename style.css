@@ -6,6 +6,7 @@
   --link-visited: gray;
 
   --main-padding: 20px;
+  --head-foot-height: 80px;
 }
 
 * {
@@ -30,10 +31,8 @@ body {
 
 header,
 footer {
-  position: relative;
-  z-index: 1;
-  
   padding: var(--main-padding);
+  height: var(--head-foot-height);
 }
 
 header {
@@ -46,11 +45,35 @@ header {
 }
 
 main {
+  height: calc(100dvh - (2 * var(--head-foot-height)));
+
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  flex-grow: 1;
+}
+
+.game-container {
+  aspect-ratio: 1;
+  width: min(600px, min(calc(100dvh - (2 * var(--head-foot-height))), 100dvw));
+  height: auto;
+
+  background-color: var(--font-main-color);
+
+  display: grid;
+  grid-template: 1fr 1fr 1fr / 1fr 1fr 1fr;
+  gap: 5px;
+}
+
+.cell {
+  background-color: var(--bg-main-color);
+  color: var(--accent-color);
+
+  font-size: min(calc(20dvh), calc(20dvw));
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 footer {
