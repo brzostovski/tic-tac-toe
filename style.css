@@ -86,6 +86,10 @@ main {
   align-items: center;
 }
 
+.cell.populated {
+  cursor: default;
+}
+
 button {
   all: unset;
   
