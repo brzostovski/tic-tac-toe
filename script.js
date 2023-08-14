@@ -43,11 +43,15 @@ const game = (function() {
   function render() {
     cells.forEach(cell => {
       cell.textContent = board[cell.dataset.index];
+      if (cell.textContent !== '') {cell.classList.add('populated')};
     })
   }
 
   function clearBoard() {
     board = [];
+    cells.forEach(cell => {
+      cell.classList.remove('populated');
+    })
     render();
   }
 
