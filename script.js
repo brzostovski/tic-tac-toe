@@ -42,43 +42,49 @@ const game = (function() {
       }
 
       function _checkForWinner() {
-        let diagonsValue = [0, 0];
-        for (let i = 0; i < board.sideLen; i++) {
-          let rowValue = 0;
-          let colValue = 0;
-          for (let j = 0; j < board.sideLen; j++) {
-            rowValue += board.rows[i][j].value;
-            colValue += board.cols[i][j].value;
-          };
-          diagonsValue[0] += board.diagons[0][i].value;
-          diagonsValue[1] += board.diagons[1][i].value;
+        let _diagonsValue = [0, 0];
+        let _playersSums = [];
 
-          if (
-            (rowValue === (3 * _players[0].value)) ||
-            (colValue === (3 * _players[0].value))) {
-              return _players[0];
-          } else if (
-            (rowValue === (3 * _players[1].value)) ||
-            (colValue === (3 * _players[1].value))) {
-              return _players[1];
+        for (let i = 0; i < _players.length; i++) {
+          _playersSums[i] = board.sideLen * _players[i].value;
+        };
+
+        for (let i = 0; i < board.sideLen; i++) {
+          let _rowValue = 0;
+          let _colValue = 0;
+
+          for (let j = 0; j < board.sideLen; j++) {
+            _rowValue += board.rows[i][j].value;
+            _colValue += board.cols[i][j].value;
+          };
+
+          for (let k = 0; k < _players.length; k++) {
+            _diagonsValue[k] += board.diagons[k][i].value;
+
+            if (
+              (_rowValue === _playersSums[k]) ||
+              (_colValue === _playersSums[k])) {
+                return _players[k];
+            }
           }
         }
-        if (diagonsValue[0] === (3 * _players[0].value)) {
-          return _players[0];
-        } else if (diagonsValue[1] === (3 * _players[1].value)) {
-          return _players[1];
-        } else {
-          return false
-        };
+
+        for (let j = 0; j < _players.length; j++) {
+          for (let k = 0; k < _players.length; k++) {
+            if (_diagonsValue[k] === _playersSums[j]) {
+              return _players[0];
+            }
+          }
+        }
       }
 
-      let currentWinner = _checkForWinner();
+      let _currentWinner = _checkForWinner();
 
-      (!!currentWinner)
-        ? (resultDisplay.textContent = `${currentWinner.symbol} wins!`)
+      (!!_currentWinner)
+        ? (resultDisplay.textContent = `${_currentWinner.symbol} wins!`)
         : (resultDisplay.textContent = 'Tie')
 
-      if (_checkBoardFull() || _checkForWinner()) {
+      if (_checkBoardFull() || _currentWinner) {
         board.toggleHidden([resetButton, gameOverCard]);
       };
     }
