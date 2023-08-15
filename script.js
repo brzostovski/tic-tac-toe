@@ -1,59 +1,64 @@
 const game = (function() {
   /* Variables */
-  const cells = document.querySelectorAll('.cell');
-  const resetButton = document.querySelector('#reset');
-  let board = [];
-  let prevTurn = 'player2';
+  let boardArr = [];
 
   /* Bindings */
-  cells.forEach(cell => {
-    cell.addEventListener('click', () => {
-      assignValue(cell);
-      render();
+  (function() {
+    const cells = document.querySelectorAll('.cell');
+    const resetButton = document.querySelector('#reset');
+
+    cells.forEach(cell => {
+      cell.addEventListener('click', () => {
+        gameController.makeMove(cell);
+        board.render(cell);
+      })
     })
-  })
+    resetButton.addEventListener('click', () => board.clear(cells));
+  })()
 
-  resetButton.addEventListener('click', () => clearBoard());
-
-  /* Player factory */
-  const players = (function() {
-    const playerFactory = (symbol) => {
+  const gameController = (function(){
+    const playerFactory = (symbol, name) => {
       return {
-        symbol
+        symbol,
+        name,
       }
     }
-    const player1 = playerFactory('X');
-    const player2 = playerFactory('O');
+
+    const player1 = playerFactory('X', 'player1');
+    const player2 = playerFactory('O', 'player2');
+    let activePlayer = player1;
+
+    function makeMove(cell) {
+      if (!boardArr[cell.dataset.index]) {
+        boardArr[cell.dataset.index] = activePlayer.symbol;
+        (activePlayer === player1)
+          ? (activePlayer = player2)
+          : (activePlayer = player1);
+      }
+    }
+
     return {
-      player1,
-      player2,
+      makeMove,
     }
   })()
 
-  /* Functions */
-  function assignValue(cell) {
-    if (!board[cell.dataset.index]) {
-      (prevTurn === 'player1')
-        ? (prevTurn = 'player2')
-        : (prevTurn = 'player1');
-      board[cell.dataset.index] = players[prevTurn].symbol;
-    }
-  }
-
-  function render() {
-    cells.forEach(cell => {
-      cell.textContent = board[cell.dataset.index];
+  const board = (function() {
+    function render(cell) {
+      cell.textContent = boardArr[cell.dataset.index];
       if (cell.textContent !== '') {cell.classList.add('populated')};
-    })
-  }
+    }
 
-  function clearBoard() {
-    board = [];
-    cells.forEach(cell => {
-      cell.classList.remove('populated');
-    })
-    render();
-  }
+    function clear(cells) {
+      boardArr = [];
+      cells.forEach(cell => {
+        cell.classList.remove('populated');
+        render(cell);
+      })
+    }
 
-  return {};
+    return {
+      render,
+      clear,
+    }
+  })()
 })()
