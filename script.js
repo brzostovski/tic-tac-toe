@@ -10,7 +10,7 @@ const game = (function() {
       board.render(cell);
     })
   })
-  resetButton.addEventListener('click', () => board.clear(cells));
+  resetButton.addEventListener('click', () => board.reset(cells));
 
   const gameController = (function() {
     let boardArr = new Array(cells.length);
@@ -68,7 +68,7 @@ const game = (function() {
       resetButton.classList.toggle('hidden');
     }
 
-    function clear(cells) {
+    function reset(cells) {
       for (i = 0; i < cells.length; i++) {
         gameController.boardArr[i] = '';
         cells[i].classList.remove('populated');
@@ -80,7 +80,7 @@ const game = (function() {
     return {
       render,
       toggleResetButton,
-      clear,
+      reset,
     }
   })()
 })()
