@@ -3,6 +3,7 @@
   --bg-secondary-color: rgb(26, 26, 26);
   --font-main-color: white;
   --accent-color: dodgerblue;
+  --pop-up-color: rgba(0, 0, 0, 0.5);
   --link-visited: gray;
   --active-filter: brightness(0.7);
 
@@ -66,6 +67,8 @@ main {
 }
 
 .game-container {
+  position: relative;
+
   aspect-ratio: 1;
   width: min(450px, min(calc(100dvh - (2 * var(--head-foot-height))), 100dvw));
   height: auto;
@@ -75,6 +78,29 @@ main {
   display: grid;
   grid-template: 1fr 1fr 1fr / 1fr 1fr 1fr;
   gap: 3px;
+}
+
+#game-over-card {
+  position: absolute;
+  z-index: 99;
+
+  aspect-ratio: 1;
+  width: min(470px, min(calc(100dvh - (2 * var(--head-foot-height))), 100dvw));
+  height: auto;
+
+  background-color: var(--pop-up-color);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+
+  border-radius: var(--main-border-radius);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hidden#game-over-card {
+  display: none;
 }
 
 .cell {
