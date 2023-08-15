@@ -3,6 +3,7 @@ const game = (function() {
   const cells = document.querySelectorAll('.cell');
   const resetButton = document.querySelector('#reset');
   const gameOverCard = document.querySelector('#game-over-card');
+  let resultDisplay = document.querySelector('#result-display');
 
   /* Bindings */
   cells.forEach(cell => {
@@ -66,8 +67,16 @@ const game = (function() {
           return _players[0];
         } else if (diagonsValue[1] === (3 * _players[1].value)) {
           return _players[1];
-        }
+        } else {
+          return false
+        };
       }
+
+      let currentWinner = _checkForWinner();
+
+      (!!currentWinner)
+        ? (resultDisplay.textContent = `${currentWinner.symbol} wins!`)
+        : (resultDisplay.textContent = 'Tie')
 
       if (_checkBoardFull() || _checkForWinner()) {
         board.toggleHidden([resetButton, gameOverCard]);
