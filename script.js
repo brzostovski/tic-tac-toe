@@ -21,12 +21,14 @@ const game = (function() {
       }
     }
 
-    const player1 = playerFactory('X', 'player1');
-    const player2 = playerFactory('O', 'player2');
-    let activePlayer = player1;
+    const players = [
+      playerFactory('X', 'player1'),
+      playerFactory('O', 'player2'),
+    ];
+    let activePlayer = players[0];
 
     function resetActivePlayer() {
-      activePlayer = player1;
+      activePlayer = players[0];
     }
 
     function checkGameState() {
@@ -49,9 +51,9 @@ const game = (function() {
     function makeMove(cell) {
       if (!board.arr[cell.dataset.index]) {
         board.arr[cell.dataset.index] = activePlayer.symbol;
-        (activePlayer === player1)
-          ? (activePlayer = player2)
-          : (activePlayer = player1);
+        (activePlayer === players[0])
+          ? (activePlayer = players[1])
+          : (activePlayer = players[0]);
       }
       checkGameState();
     }
