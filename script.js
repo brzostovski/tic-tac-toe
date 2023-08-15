@@ -39,9 +39,6 @@ const game = (function() {
 
       function checkForWinner() {
         //find winner logic here
-        let rows = {row1: [], row2: [], row3: []};
-        let columns = {col1: [], col2: [], col3: []};
-        let diagonals = {diagon1: [], diagon2: []};
       }
 
       if (checkBoardFull() || checkForWinner()) {
@@ -70,6 +67,27 @@ const game = (function() {
     for (i = 0; i < arr.length; i++) {
       arr[i] = '';
     }
+    let sideLen = Math.sqrt(arr.length);
+    let rows = [];
+    let cols = [];
+    let diagons = [[], []];
+
+    for (let i = 0; i < sideLen; i++) {
+      rows[i] = [];
+      cols[i] = [];
+    };
+    
+    for (let i = 0; i < sideLen; i++) {
+      for (let j = 0; j < sideLen; j++) {
+        rows[j][i] = cells[i + (j * 3)];
+        cols[i][j] = cells[i + (j * 3)];
+      };
+    };
+
+    for (let i = 0; i < sideLen; i++) {
+      diagons[0][i] = rows[i][i];
+      diagons[1][i] = rows[i][sideLen - 1 -i];
+    };
 
     function render(cell) {
       cell.textContent = board.arr[cell.dataset.index];
@@ -95,6 +113,10 @@ const game = (function() {
 
     return {
       arr,
+      sideLen,
+      cols,
+      rows,
+      diagons,
       render,
       toggleHidden,
       reset,
