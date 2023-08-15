@@ -4,6 +4,7 @@ const game = (function() {
   /* Bindings */
   const cells = document.querySelectorAll('.cell');
   const resetButton = document.querySelector('#reset');
+  const gameOverCard = document.querySelector('#game-over-card');
   cells.forEach(cell => {
     cell.addEventListener('click', () => {
       gameController.makeMove(cell);
@@ -38,7 +39,7 @@ const game = (function() {
       }
 
       if (checkBoardFull()) {
-        board.toggleResetButton();
+        board.toggleHidden([resetButton, gameOverCard]);
       };
     }
 
@@ -64,8 +65,8 @@ const game = (function() {
       if (cell.textContent !== '') {cell.classList.add('populated')};
     }
 
-    function toggleResetButton() {
-      resetButton.classList.toggle('hidden');
+    function toggleHidden(elementsArr) {
+      elementsArr.forEach(element => element.classList.toggle('hidden'));
     }
 
     function reset(cells) {
@@ -74,12 +75,12 @@ const game = (function() {
         cells[i].classList.remove('populated');
         render(cells[i]);
       }
-      toggleResetButton();
+      toggleHidden([resetButton, gameOverCard]);
     }
 
     return {
       render,
-      toggleResetButton,
+      toggleHidden,
       reset,
     }
   })()
