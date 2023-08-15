@@ -66,7 +66,10 @@ const game = (function() {
     }
 
     function toggleHidden(elementsArr) {
-      elementsArr.forEach(element => element.classList.toggle('hidden'));
+      window.setTimeout((() => {
+        elementsArr.forEach(element => element.classList.toggle('hidden'))
+      }),
+      500); //timeout duration in ms
     }
 
     function reset(cells) {
