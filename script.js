@@ -30,6 +30,10 @@ const game = (function() {
     const player2 = playerFactory('O', 'player2');
     let activePlayer = player1;
 
+    function resetActivePlayer() {
+      activePlayer = player1;
+    }
+
     function checkGameState() {
       function checkBoardFull() {
         for (let i = 0; i < boardArr.length; i++) {
@@ -38,7 +42,12 @@ const game = (function() {
         return true;
       }
 
-      if (checkBoardFull()) {
+      function checkForWinner() {
+        //find winner logic here
+        return false;
+      }
+
+      if (checkBoardFull() || checkForWinner()) {
         board.toggleHidden([resetButton, gameOverCard]);
       };
     }
@@ -55,6 +64,7 @@ const game = (function() {
 
     return {
       boardArr,
+      resetActivePlayer,
       makeMove,
     }
   })()
@@ -78,6 +88,7 @@ const game = (function() {
         cells[i].classList.remove('populated');
         render(cells[i]);
       }
+      gameController.resetActivePlayer();
       toggleHidden([resetButton, gameOverCard]);
     }
 
