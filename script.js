@@ -4,7 +4,6 @@ const game = (function() {
   /* Bindings */
   const cells = document.querySelectorAll('.cell');
   const resetButton = document.querySelector('#reset');
-
   cells.forEach(cell => {
     cell.addEventListener('click', () => {
       gameController.makeMove(cell);
@@ -13,7 +12,7 @@ const game = (function() {
   })
   resetButton.addEventListener('click', () => board.clear(cells));
 
-  const gameController = (function(){
+  const gameController = (function() {
     let boardArr = new Array(cells.length);
     for (i = 0; i < boardArr.length; i++) {
       boardArr[i] = '';
@@ -30,11 +29,17 @@ const game = (function() {
     const player2 = playerFactory('O', 'player2');
     let activePlayer = player1;
 
-    function checkEndGame() {
-      for (let i = 0; i < boardArr.length; i++) {
-        if (boardArr[i] === '') {return false};
+    function checkGameState() {
+      function checkBoardFull() {
+        for (let i = 0; i < boardArr.length; i++) {
+          if (boardArr[i] === '') {return false};
+        }
+        return true;
       }
-      return true;
+
+      if (checkBoardFull()) {
+        board.toggleResetButton();
+      };
     }
 
     function makeMove(cell) {
@@ -44,9 +49,7 @@ const game = (function() {
           ? (activePlayer = player2)
           : (activePlayer = player1);
       }
-      if (checkEndGame()) {
-        board.toggleResetButton();
-      };
+      checkGameState();
     }
 
     return {
@@ -80,6 +83,4 @@ const game = (function() {
       clear,
     }
   })()
-
-  return {gameController}
 })()
