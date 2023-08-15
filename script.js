@@ -1,22 +1,24 @@
 const game = (function() {
-  /* Variables */
-  let boardArr = [];
+  /* Global variables */
 
   /* Bindings */
-  (function() {
-    const cells = document.querySelectorAll('.cell');
-    const resetButton = document.querySelector('#reset');
+  const cells = document.querySelectorAll('.cell');
+  const resetButton = document.querySelector('#reset');
 
-    cells.forEach(cell => {
-      cell.addEventListener('click', () => {
-        gameController.makeMove(cell);
-        board.render(cell);
-      })
+  cells.forEach(cell => {
+    cell.addEventListener('click', () => {
+      gameController.makeMove(cell);
+      board.render(cell);
     })
-    resetButton.addEventListener('click', () => board.clear(cells));
-  })()
+  })
+  resetButton.addEventListener('click', () => board.clear(cells));
 
   const gameController = (function(){
+    let boardArr = new Array(cells.length);
+    for (i = 0; i < boardArr.length; i++) {
+      boardArr[i] = '';
+    }
+
     const playerFactory = (symbol, name) => {
       return {
         symbol,
@@ -28,6 +30,13 @@ const game = (function() {
     const player2 = playerFactory('O', 'player2');
     let activePlayer = player1;
 
+    function checkEndGame() {
+      for (let i = 0; i < boardArr.length; i++) {
+        if (boardArr[i] === '') {return false};
+      }
+      return true;
+    }
+
     function makeMove(cell) {
       if (!boardArr[cell.dataset.index]) {
         boardArr[cell.dataset.index] = activePlayer.symbol;
@@ -35,30 +44,42 @@ const game = (function() {
           ? (activePlayer = player2)
           : (activePlayer = player1);
       }
+      if (checkEndGame()) {
+        board.toggleResetButton();
+      };
     }
 
     return {
+      boardArr,
       makeMove,
     }
   })()
 
   const board = (function() {
     function render(cell) {
-      cell.textContent = boardArr[cell.dataset.index];
+      cell.textContent = gameController.boardArr[cell.dataset.index];
       if (cell.textContent !== '') {cell.classList.add('populated')};
     }
 
+    function toggleResetButton() {
+      resetButton.classList.toggle('hidden');
+    }
+
     function clear(cells) {
-      boardArr = [];
-      cells.forEach(cell => {
-        cell.classList.remove('populated');
-        render(cell);
-      })
+      for (i = 0; i < cells.length; i++) {
+        gameController.boardArr[i] = '';
+        cells[i].classList.remove('populated');
+        render(cells[i]);
+      }
+      toggleResetButton();
     }
 
     return {
       render,
+      toggleResetButton,
       clear,
     }
   })()
+
+  return {gameController}
 })()
