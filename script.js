@@ -14,11 +14,6 @@ const game = (function() {
   resetButton.addEventListener('click', () => board.reset(cells));
 
   const gameController = (function() {
-    let boardArr = new Array(cells.length);
-    for (i = 0; i < boardArr.length; i++) {
-      boardArr[i] = '';
-    }
-
     const playerFactory = (symbol, name) => {
       return {
         symbol,
@@ -36,15 +31,17 @@ const game = (function() {
 
     function checkGameState() {
       function checkBoardFull() {
-        for (let i = 0; i < boardArr.length; i++) {
-          if (boardArr[i] === '') {return false};
+        for (let i = 0; i < board.arr.length; i++) {
+          if (board.arr[i] === '') {return false};
         }
         return true;
       }
 
       function checkForWinner() {
         //find winner logic here
-        return false;
+        let rows = {row1: [], row2: [], row3: []};
+        let columns = {col1: [], col2: [], col3: []};
+        let diagonals = {diagon1: [], diagon2: []};
       }
 
       if (checkBoardFull() || checkForWinner()) {
@@ -53,8 +50,8 @@ const game = (function() {
     }
 
     function makeMove(cell) {
-      if (!boardArr[cell.dataset.index]) {
-        boardArr[cell.dataset.index] = activePlayer.symbol;
+      if (!board.arr[cell.dataset.index]) {
+        board.arr[cell.dataset.index] = activePlayer.symbol;
         (activePlayer === player1)
           ? (activePlayer = player2)
           : (activePlayer = player1);
@@ -63,15 +60,19 @@ const game = (function() {
     }
 
     return {
-      boardArr,
       resetActivePlayer,
       makeMove,
     }
   })()
 
   const board = (function() {
+    let arr = new Array(cells.length);
+    for (i = 0; i < arr.length; i++) {
+      arr[i] = '';
+    }
+
     function render(cell) {
-      cell.textContent = gameController.boardArr[cell.dataset.index];
+      cell.textContent = board.arr[cell.dataset.index];
       if (cell.textContent !== '') {cell.classList.add('populated')};
     }
 
@@ -84,7 +85,7 @@ const game = (function() {
 
     function reset(cells) {
       for (i = 0; i < cells.length; i++) {
-        gameController.boardArr[i] = '';
+        board.arr[i] = '';
         cells[i].classList.remove('populated');
         render(cells[i]);
       }
@@ -93,6 +94,7 @@ const game = (function() {
     }
 
     return {
+      arr,
       render,
       toggleHidden,
       reset,
