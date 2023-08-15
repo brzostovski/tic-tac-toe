@@ -4,6 +4,7 @@
   --font-main-color: white;
   --accent-color: dodgerblue;
   --pop-up-color: rgba(0, 0, 0, 0.5);
+  --background-blur: blur(5px);
   --link-visited: gray;
   --active-filter: brightness(0.7);
 
@@ -89,8 +90,8 @@ main {
   height: auto;
 
   background-color: var(--pop-up-color);
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: var(--background-blur);
+  -webkit-backdrop-filter: var(--background-blur);
 
   border-radius: var(--main-border-radius);
 
