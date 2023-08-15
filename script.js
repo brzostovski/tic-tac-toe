@@ -1,10 +1,10 @@
 const game = (function() {
   /* Global variables */
-
-  /* Bindings */
   const cells = document.querySelectorAll('.cell');
   const resetButton = document.querySelector('#reset');
   const gameOverCard = document.querySelector('#game-over-card');
+
+  /* Bindings */
   cells.forEach(cell => {
     cell.addEventListener('click', () => {
       gameController.makeMove(cell);
@@ -14,16 +14,17 @@ const game = (function() {
   resetButton.addEventListener('click', () => board.reset(cells));
 
   const gameController = (function() {
-    const _playerFactory = (symbol, name) => {
+    const _playerFactory = (symbol, name, value) => {
       return {
         symbol,
         name,
+        value,
       }
     }
 
     const _players = [
-      _playerFactory('X', 'player1'),
-      _playerFactory('O', 'player2'),
+      _playerFactory('X', 'player1', 1),
+      _playerFactory('O', 'player2', 4),
     ];
     let activePlayer = _players[0];
 
@@ -40,7 +41,32 @@ const game = (function() {
       }
 
       function _checkForWinner() {
-        //find winner logic here
+        let diagonsValue = [0, 0];
+        for (let i = 0; i < board.sideLen; i++) {
+          let rowValue = 0;
+          let colValue = 0;
+          for (let j = 0; j < board.sideLen; j++) {
+            rowValue += board.rows[i][j].value;
+            colValue += board.cols[i][j].value;
+          };
+          diagonsValue[0] += board.diagons[0][i].value;
+          diagonsValue[1] += board.diagons[1][i].value;
+
+          if (
+            (rowValue === (3 * _players[0].value)) ||
+            (colValue === (3 * _players[0].value))) {
+              return _players[0];
+          } else if (
+            (rowValue === (3 * _players[1].value)) ||
+            (colValue === (3 * _players[1].value))) {
+              return _players[1];
+          }
+        }
+        if (diagonsValue[0] === (3 * _players[0].value)) {
+          return _players[0];
+        } else if (diagonsValue[1] === (3 * _players[1].value)) {
+          return _players[1];
+        }
       }
 
       if (_checkBoardFull() || _checkForWinner()) {
@@ -50,7 +76,7 @@ const game = (function() {
 
     function makeMove(cell) {
       if (!board.arr[cell.dataset.index]) {
-        board.updateArr(cell.dataset.index, activePlayer.symbol);
+        board.updateArr(cell.dataset.index, activePlayer);
         (activePlayer === _players[0])
           ? (activePlayer = _players[1])
           : (activePlayer = _players[0]);
@@ -99,7 +125,7 @@ const game = (function() {
     }
 
     function render(cell) {
-      cell.textContent = board.arr[cell.dataset.index];
+      cell.textContent = board.arr[cell.dataset.index].symbol;
       if (cell.textContent !== '') {cell.classList.add('populated')};
     }
 
