@@ -96,6 +96,7 @@ main {
   border-radius: var(--main-border-radius);
 
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 }
