@@ -1,5 +1,5 @@
 const game = (function() {
-  /* Global variables */
+  /* Game module variables */
   const cells = document.querySelectorAll('.cell');
   const resetButton = document.querySelector('#reset');
   const gameOverCard = document.querySelector('#game-over-card');
