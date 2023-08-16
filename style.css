@@ -12,8 +12,9 @@
   --normal-transition-duration: 0.2s;
 
   --main-padding: 20px;
+  --main-margin: 10px;
   --fieldset-padding: 5px;
-  --button-padding: 10px 20px;
+  --button-padding: 5px 10px;
   --head-foot-height: 80px;
   --main-border-radius: 10px;
   --fieldset-border-radius: 5px;
@@ -31,12 +32,12 @@ body {
   background-color: var(--bg-main-color);
   color: var(--font-main-color);
 
-  min-height: 100dvh;
+  height: 100dvh;
 
   position: relative;
 
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template: 1fr 10fr 1fr / 1fr;
 }
 
 .hidden {
@@ -46,7 +47,6 @@ body {
 header,
 footer {
   padding: var(--main-padding);
-  height: var(--head-foot-height);
 }
 
 header {
@@ -92,11 +92,23 @@ main {
   height: calc(100dvh - (2 * var(--head-foot-height)));
 
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
-.game-container {
+#active-player-display {
+  background-color: var(--pop-up-color);
+
+  padding: var(--fieldset-padding);
+
+  border-radius: var(--fieldset-border-radius);
+
+  position: relative;
+  bottom: 20px;
+}
+
+#board-container {
   position: relative;
 
   aspect-ratio: 1;
