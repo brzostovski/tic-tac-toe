@@ -115,7 +115,7 @@ main {
   z-index: 99;
 
   aspect-ratio: 1;
-  width: min(470px, min(calc(100dvh - (2 * var(--head-foot-height))), 100dvw));
+  width: min(450px, min(calc(100dvh - (2 * var(--head-foot-height))), 100dvw));
   height: auto;
 
   background-color: var(--pop-up-color);
