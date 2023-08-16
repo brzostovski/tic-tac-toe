@@ -3,7 +3,9 @@ const game = (function() {
   const cells = document.querySelectorAll('.cell');
   const resetButton = document.querySelector('#reset');
   const gameOverCard = document.querySelector('#game-over-card');
+
   let resultDisplay = document.querySelector('#result-display');
+  let activePlayerDisplay = document.querySelector('#active-player-display');
   let playerOneInput = document.querySelector('#player1-name');
   let playerTwoInput = document.querySelector('#player2-name');
 
@@ -17,6 +19,7 @@ const game = (function() {
   resetButton.addEventListener('click', () => board.reset(cells));
 
   const gameController = (function() {
+    activePlayerDisplay.textContent = `Let's play!`;
     resultDisplay.textContent = 'New Game';
 
     const _playerFactory = (symbol, name, value) => {
@@ -37,6 +40,11 @@ const game = (function() {
       _players[0].name = (playerOneInput.value || playerOneInput.placeholder);
       _players[1].name = (playerTwoInput.value || playerTwoInput.placeholder);
       _activePlayer = _players[0];
+      _updatePlayerDisplay();
+    }
+
+    function _updatePlayerDisplay() {
+      activePlayerDisplay.textContent = `${_activePlayer.name}'s turn`;
     }
 
     function _checkGameState() {
@@ -91,6 +99,7 @@ const game = (function() {
         : (resultDisplay.textContent = 'Tie')
 
       if (_checkBoardFull() || _currentWinner) {
+        activePlayerDisplay.textContent = 'GAME OVER!';
         board.toggleHidden([resetButton, gameOverCard]);
       };
     }
@@ -101,6 +110,7 @@ const game = (function() {
         (_activePlayer === _players[0])
           ? (_activePlayer = _players[1])
           : (_activePlayer = _players[0]);
+        _updatePlayerDisplay();
       }
       _checkGameState();
     }
