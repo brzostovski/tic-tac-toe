@@ -4,6 +4,8 @@ const game = (function() {
   const resetButton = document.querySelector('#reset');
   const gameOverCard = document.querySelector('#game-over-card');
   let resultDisplay = document.querySelector('#result-display');
+  let playerOneInput = document.querySelector('#player1-name');
+  let playerTwoInput = document.querySelector('#player2-name');
 
   /* Bindings */
   cells.forEach(cell => {
@@ -15,6 +17,8 @@ const game = (function() {
   resetButton.addEventListener('click', () => board.reset(cells));
 
   const gameController = (function() {
+    resultDisplay.textContent = 'New Game';
+
     const _playerFactory = (symbol, name, value) => {
       return {
         symbol,
@@ -24,13 +28,15 @@ const game = (function() {
     }
 
     const _players = [
-      _playerFactory('X', 'player1', 1),
-      _playerFactory('O', 'player2', 4),
+      _playerFactory('X', playerOneInput.placeholder, 1),
+      _playerFactory('O', playerTwoInput.placeholder, 4),
     ];
-    let activePlayer = _players[0];
+    let _activePlayer = _players[0];
 
-    function resetActivePlayer() {
-      activePlayer = _players[0];
+    function resetPlayers() {
+      _players[0].name = (playerOneInput.value || playerOneInput.placeholder);
+      _players[1].name = (playerTwoInput.value || playerTwoInput.placeholder);
+      _activePlayer = _players[0];
     }
 
     function _checkGameState() {
@@ -81,7 +87,7 @@ const game = (function() {
       let _currentWinner = _checkForWinner();
 
       (!!_currentWinner)
-        ? (resultDisplay.textContent = `${_currentWinner.symbol} wins!`)
+        ? (resultDisplay.textContent = `${_currentWinner.name} wins!`)
         : (resultDisplay.textContent = 'Tie')
 
       if (_checkBoardFull() || _currentWinner) {
@@ -91,16 +97,16 @@ const game = (function() {
 
     function makeMove(cell) {
       if (!board.arr[cell.dataset.index]) {
-        board.updateArr(cell.dataset.index, activePlayer);
-        (activePlayer === _players[0])
-          ? (activePlayer = _players[1])
-          : (activePlayer = _players[0]);
+        board.updateArr(cell.dataset.index, _activePlayer);
+        (_activePlayer === _players[0])
+          ? (_activePlayer = _players[1])
+          : (_activePlayer = _players[0]);
       }
       _checkGameState();
     }
 
     return {
-      resetActivePlayer,
+      resetActivePlayer: resetPlayers,
       makeMove,
     }
   })()
@@ -145,10 +151,7 @@ const game = (function() {
     }
 
     function toggleHidden(elementsArr) {
-      window.setTimeout((() => {
-        elementsArr.forEach(element => element.classList.toggle('hidden'))
-      }),
-      500); //timeout duration in ms
+      elementsArr.forEach(element => element.classList.toggle('hidden'));
     }
 
     function reset(cells) {
@@ -174,8 +177,4 @@ const game = (function() {
       reset,
     }
   })()
-  return {
-    gameController,
-    board,
-  }
 })()
