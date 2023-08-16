@@ -7,13 +7,16 @@
   --background-blur: blur(7px);
   --link-visited: gray;
   --active-filter: brightness(0.7);
+  --input-bg-color: rgba(0, 0, 0, 0.4);
 
   --normal-transition-duration: 0.2s;
 
   --main-padding: 20px;
+  --fieldset-padding: 5px;
   --button-padding: 10px 20px;
   --head-foot-height: 80px;
   --main-border-radius: 10px;
+  --fieldset-border-radius: 5px;
 }
 
 * {
@@ -59,20 +62,29 @@ header {
   justify-content: space-between;
 }
 
-fieldset {
-  border: none;
-}
-
-#player-names-input {
-  position: absolute;
-
-  width: 100%;
-
+form#player-names-input {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   gap: 0.5rem;
+}
+
+fieldset {
+  border: none;
+
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+input[type='text'] {
+  background-color: var(--input-bg-color);
+
+  border: 1px solid var(--font-main-color);
+  border-radius: var(--fieldset-border-radius);
+
+  padding: var(--fieldset-padding);
 }
 
 main {
@@ -115,6 +127,7 @@ main {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  gap: 1rem;
 }
 
 .hidden#game-over-card {
