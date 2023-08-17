@@ -121,7 +121,8 @@ main {
 
   display: grid;
   grid-template: 1fr 1fr 1fr / 1fr 1fr 1fr;
-  gap: 3px;
+  justify-content: center;
+  align-items: center;
 }
 
 #game-over-card {
@@ -150,8 +151,14 @@ main {
 }
 
 .cell {
+  all: unset;
+  aspect-ratio: 1;
+  min-height: calc(var(--game-container-size) / 3);
+
   background-color: var(--bg-main-color);
   color: var(--accent-color);
+
+  border: solid 1px var(--font-main-color);
 
   cursor: pointer;
 
@@ -160,6 +167,10 @@ main {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.cell:hover {
+  scale: 1;
 }
 
 .cell.populated {
