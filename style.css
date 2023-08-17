@@ -18,6 +18,7 @@
   --head-foot-height: 80px;
   --main-border-radius: 10px;
   --fieldset-border-radius: 5px;
+  --game-container-size: min(450px, min(calc(100dvh - (2 * var(--head-foot-height))), 100dvw));
 }
 
 * {
@@ -105,14 +106,15 @@ main {
   border-radius: var(--fieldset-border-radius);
 
   position: relative;
-  bottom: 20px;
+  margin-bottom: calc(var(--game-container-size) + 40px);
+  z-index: 2;
 }
 
 #board-container {
-  position: relative;
+  position: absolute;
 
   aspect-ratio: 1;
-  width: min(450px, min(calc(100dvh - (2 * var(--head-foot-height))), 100dvw));
+  width: var(--game-container-size);
   height: auto;
 
   background-color: var(--font-main-color);
@@ -124,10 +126,10 @@ main {
 
 #game-over-card {
   position: absolute;
-  z-index: 99;
+  z-index: 1;
 
   aspect-ratio: 1;
-  width: min(450px, min(calc(100dvh - (2 * var(--head-foot-height))), 100dvw));
+  width: var(--game-container-size);
   height: auto;
 
   background-color: var(--pop-up-color);
